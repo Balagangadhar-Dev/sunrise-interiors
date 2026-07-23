@@ -1,0 +1,222 @@
+/* src/components/Footer.css */
+
+.footer {
+  position: relative;
+  background: #0a0a0a;
+  border-top: 1px solid rgba(200, 169, 110, 0.12);
+  overflow: hidden;
+}
+
+.footer__glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(200, 169, 110, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.footer__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 40px 60px;
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr 1.5fr;
+  gap: 60px;
+}
+
+/* Brand */
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.footer__logo img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.footer__logo div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.footer__logo-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #F5F0E8;
+  line-height: 1;
+}
+
+.footer__logo-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #C8A96E;
+}
+
+.footer__tagline {
+  font-size: 14px;
+  color: #8A8A8A;
+  line-height: 1.8;
+  margin-bottom: 24px;
+  max-width: 320px;
+}
+
+.footer__socials {
+  display: flex;
+  gap: 12px;
+}
+
+.footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid rgba(200, 169, 110, 0.3);
+  color: #C8A96E;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer__social-link:hover {
+  background: rgba(200, 169, 110, 0.1);
+  border-color: #C8A96E;
+}
+
+.footer__social-link--wa {
+  color: #65D46E;
+  border-color: rgba(101, 212, 110, 0.3);
+}
+
+.footer__social-link--wa:hover {
+  background: rgba(101, 212, 110, 0.08);
+  border-color: #65D46E;
+}
+
+/* Columns */
+.footer__col-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #C8A96E;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(200, 169, 110, 0.15);
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer__link {
+  font-size: 13px;
+  color: #8A8A8A;
+  text-decoration: none;
+  transition: color 0.25s ease, padding-left 0.25s ease;
+}
+
+.footer__link:hover {
+  color: #C8A96E;
+  padding-left: 4px;
+}
+
+/* Contact */
+.footer__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer__contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #8A8A8A;
+  text-decoration: none;
+  transition: color 0.25s ease;
+  line-height: 1.5;
+}
+
+a.footer__contact-item:hover { color: #C8A96E; }
+
+.footer__hours {
+  margin-top: 16px;
+}
+
+.footer__hours-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.08em;
+  color: #C8A96E;
+}
+
+/* Bottom */
+.footer__bottom {
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.footer__bottom-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer__copyright {
+  font-size: 12px;
+  color: #555;
+}
+
+.footer__seo-text {
+  font-size: 11px;
+  color: #444;
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .footer__container {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  .footer__brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 600px) {
+  .footer__container {
+    grid-template-columns: 1fr;
+    padding: 60px 24px 40px;
+    gap: 40px;
+  }
+  .footer__bottom-inner {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .footer__seo-text { text-align: center; }
+}

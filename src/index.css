@@ -1,0 +1,36 @@
+/* src/index.css — minimal overrides on top of globals */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* WhatsApp floating button on all pages */
+.wa-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 500;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.35);
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  animation: waPulse 3s ease-in-out infinite;
+}
+
+.wa-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.5);
+}
+
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 8px 32px rgba(37, 211, 102, 0.35); }
+  50% { box-shadow: 0 8px 48px rgba(37, 211, 102, 0.55), 0 0 0 8px rgba(37, 211, 102, 0.1); }
+}
