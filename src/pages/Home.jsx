@@ -128,8 +128,8 @@ function HeroSlideshow() {
 }
 
 const testimonials = [
-  { name: 'Rajesh Kumar', location: 'Ongole', rating: 5, text: 'Incredible architects. The whole process, a star who designs — our dream space became a reality!', avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d' },
-  { name: 'Priya Venkat', location: 'Markapur', rating: 5, text: 'The visualizations were so realistic, and the material recommendations were spot on for our warm, humid climate.', avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d' },
+  { name: 'Rajesh Kumar', location: 'Ongole', rating: 5, text: 'Incredible architects. The whole process, a star who designs — our dream space became a reality!', avatar: 'https://placehold.co/150' },
+  { name: 'Priya Venkat', location: 'Markapur', rating: 5, text: 'The visualizations were so realistic, and the material recommendations were spot on for our warm, humid climate.', avatar: 'https://placehold.co/150' },
 ];
 
 export default function Home() {

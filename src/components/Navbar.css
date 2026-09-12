@@ -42,7 +42,7 @@
   width: 38px;
   height: 38px;
   object-fit: contain;
-  filter: brightness(0);
+  /* filter: brightness(0); */
 }
 
 .navbar__logo-text {

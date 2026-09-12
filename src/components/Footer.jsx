@@ -43,7 +43,7 @@ export default function Footer() {
             <img src={logoNew} alt="Sunrise Interiors" />
             <div>
               <span className="footer__logo-name">Sunrise Interiors</span>
-              <span className="footer__logo-sub">Markapur</span>
+              <span className="footer__logo-sub">Markapur, Hyderabad</span>
             </div>
           </Link>
           <p className="footer__tagline">
