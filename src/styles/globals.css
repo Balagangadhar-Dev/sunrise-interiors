@@ -1,32 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 /* ============================================================
    DESIGN TOKENS
    ============================================================ */
 :root {
-  /* Colors */
-  --bg:           #080808;
-  --bg-2:         #111111;
-  --bg-3:         #1a1a1a;
-  --bg-card:      rgba(20, 20, 20, 0.85);
-  --gold:         #C8A96E;
-  --gold-light:   #E2C98A;
-  --gold-dark:    #9A7A45;
-  --cream:        #F5F0E8;
+  /* Colors - Warm & Vibrant Theme */
+  --bg:           #F7F5F0;
+  --bg-2:         #FFFFFF;
+  --bg-3:         #EBE7DD;
+  --bg-card:      #FFFFFF;
+  
+  --primary:      #C85A40; /* Terracotta */
+  --primary-hover:#E47255;
+  --secondary:    #234538; /* Deep Forest Green */
+  --secondary-light:#2D5848;
+  
+  --text-main:    #1A1A1A; /* Deep Charcoal */
+  --text-muted:   #666666;
   --white:        #FFFFFF;
-  --stone:        #8A8A8A;
+  --stone:        #888888;
   --stone-light:  #BBBBBB;
-  --border:       rgba(200, 169, 110, 0.15);
-  --border-light: rgba(255,255,255,0.07);
+  
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-light: rgba(0, 0, 0, 0.04);
 
   /* Typography */
-  --font-serif:   'Cormorant Garamond', Georgia, serif;
-  --font-sans:    'DM Sans', system-ui, sans-serif;
-  --font-mono:    'DM Mono', monospace;
+  --font-serif:   'Space Grotesk', system-ui, sans-serif;
+  --font-sans:    'Inter', system-ui, sans-serif;
+  --font-mono:    'Inter', monospace;
 
   /* Spacing */
-  --max-width:    1280px;
-  --section-v:    120px;
+  --max-width:    1400px;
+  --section-v:    140px;
   --section-v-sm: 80px;
 
   /* Transitions */
@@ -37,9 +42,9 @@
   --t-slow:       0.7s;
 
   /* Shadows */
-  --shadow-glow:  0 0 40px rgba(200, 169, 110, 0.12);
-  --shadow-card:  0 20px 60px rgba(0,0,0,0.5);
-  --shadow-float: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-glow:  0 0 40px rgba(200, 90, 64, 0.15);
+  --shadow-card:  0 20px 40px rgba(0, 0, 0, 0.06);
+  --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 /* ============================================================
@@ -59,7 +64,7 @@ html {
 body {
   font-family: var(--font-sans);
   background-color: var(--bg);
-  color: var(--cream);
+  color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -90,21 +95,22 @@ button {
 /* ============================================================
    SCROLLBAR
    ============================================================ */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+::-webkit-scrollbar-thumb { background: var(--stone); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--white); }
 
 /* ============================================================
    TYPOGRAPHY UTILITIES
    ============================================================ */
 .section-label {
   display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.25em;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--stone-light);
   margin-bottom: 1rem;
 }
 
@@ -113,99 +119,101 @@ button {
   display: inline-block;
   width: 24px;
   height: 1px;
-  background: var(--gold);
+  background: var(--stone-light);
   vertical-align: middle;
   margin-right: 10px;
 }
 
 .display-title {
   font-family: var(--font-serif);
-  font-weight: 300;
-  font-size: clamp(2.8rem, 6vw, 5.5rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: var(--cream);
+  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--text-main);
 }
 
 .display-title em {
-  font-style: italic;
-  color: var(--gold);
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-main);
 }
 
 .section-title {
   font-family: var(--font-serif);
-  font-weight: 300;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1.15;
-  color: var(--cream);
+  font-weight: 600;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--text-main);
 }
 
 .section-title em {
-  font-style: italic;
-  color: var(--gold);
+  font-style: normal;
+  color: var(--primary);
 }
 
 .body-text {
-  font-size: 1rem;
-  color: var(--stone-light);
-  line-height: 1.8;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-weight: 400;
 }
 
 /* ============================================================
-   BUTTON UTILITIES
+   BUTTON UTILITIES (PILL SHAPED)
    ============================================================ */
 .btn-gold {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 32px;
-  background: var(--gold);
-  color: var(--bg);
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 36px;
+  background: var(--primary);
+  color: var(--white);
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  border: 1px solid var(--gold);
+  border-radius: 9999px; /* Pill shape */
   cursor: pointer;
   transition: all var(--t-mid) var(--ease);
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--primary);
 }
 
-.btn-gold::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--cream);
-  transform: translateX(-100%);
-  transition: transform var(--t-mid) var(--ease);
+.btn-gold:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
 }
-
-.btn-gold:hover::before { transform: translateX(0); }
-.btn-gold:hover { color: var(--bg); }
-.btn-gold span { position: relative; z-index: 1; }
 
 .btn-outline {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 13px 30px;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 36px;
   background: transparent;
-  color: var(--cream);
+  color: var(--text-main);
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  border: 1px solid rgba(245, 240, 232, 0.3);
+  border-radius: 9999px; /* Pill shape */
+  border: 1px solid var(--border);
   cursor: pointer;
   transition: all var(--t-mid) var(--ease);
 }
 
 .btn-outline:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  border-color: var(--text-main);
+  background: var(--text-main);
+  color: var(--bg);
 }
 
 /* ============================================================
@@ -235,18 +243,18 @@ button {
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-card);
+  border-radius: 16px;
 }
 
 /* ============================================================
-   GOLD LINE DIVIDER
+   GOLD LINE DIVIDER (NOW MINIMAL LINE)
    ============================================================ */
 .gold-line {
-  width: 48px;
+  width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, var(--gold), transparent);
-  margin: 24px 0;
+  background: var(--border);
+  margin: 32px 0;
 }
 
 /* ============================================================

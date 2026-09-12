@@ -1,16 +1,16 @@
 {
   "name": "sunrise-vite",
   "private": true,
+  "homepage": "https://yaswanth211825.github.io/SunriseApartments",
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/Balagangadhar-Dev/sunrise-interiors",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "framer-motion": "^12.42.2",

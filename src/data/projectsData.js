@@ -2,7 +2,7 @@
 // Images served from /public/projects/* (Vite public directory)
 // These are the ACTUAL project photos from Sunrise Interiors' completed work
 
-export const projects = [
+const rawProjects = [
   {
     id: 'arun-sanga-villa',
     slug: 'arun-sanga-villa',
@@ -295,5 +295,17 @@ export const projects = [
     ],
   },
 ];
+
+const addBase = (path) => (path && path.startsWith('/') ? import.meta.env.BASE_URL + path.slice(1) : path);
+
+export const projects = rawProjects.map(proj => ({
+  ...proj,
+  thumbnail: addBase(proj.thumbnail),
+  images: proj.images?.map(addBase),
+  roomCards: proj.roomCards?.map(card => ({
+    ...card,
+    img: addBase(card.img)
+  }))
+}));
 
 export const getProjectBySlug = (slug) => projects.find(p => p.slug === slug);

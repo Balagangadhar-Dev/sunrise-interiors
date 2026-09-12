@@ -1,6 +1,6 @@
 // src/components/Footer.jsx
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Video } from 'lucide-react';
+import { Phone, Mail, MapPin, Video, ArrowRight } from 'lucide-react';
 import logoNew from '../assets/logo-new.png';
 import './Footer.css';
 
@@ -25,6 +25,17 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer__glow" />
+
+      {/* Massive CTA Section */}
+      <div className="footer__massive-cta">
+        <h2 className="footer__giant-text">
+          ANYTHING IN MIND?<br />LET'S TALK
+        </h2>
+        <a href="https://wa.me/919652540850" target="_blank" rel="noopener noreferrer" className="btn-gold footer__cta-btn">
+          Start a project <ArrowRight size={14} />
+        </a>
+      </div>
+
       <div className="footer__container">
         {/* Brand Column */}
         <div className="footer__brand">
@@ -46,7 +57,7 @@ export default function Footer() {
               className="footer__social-link"
               aria-label="Sunrise Interiors YouTube Channel"
             >
-              <Video size={18} />
+              <Video size={14} />
               YouTube
             </a>
             <a
@@ -93,7 +104,7 @@ export default function Footer() {
             <li>
               <a href="tel:+917013070030" className="footer__contact-item">
                 <Phone size={14} />
-                70130 70030
+                +91 70130-70030
               </a>
             </li>
             <li>
@@ -107,9 +118,6 @@ export default function Footer() {
               <span>#10-204-36-4, Beside HP Petrol Bunk, SVKP College Road, Markapur – 523316, AP</span>
             </li>
           </ul>
-          <div className="footer__hours">
-            <span className="footer__hours-badge">Open Mon–Sat: 9AM – 7PM</span>
-          </div>
         </div>
       </div>
 

@@ -45,7 +45,7 @@ export default function Navbar() {
             <img src={logoNew} alt="Sunrise Interiors" className="navbar__logo-img" />
             <div className="navbar__logo-text">
               <span className="navbar__logo-name">Sunrise Interiors</span>
-              <span className="navbar__logo-sub">Markapur</span>
+              <span className="navbar__logo-sub">Markapur, Hyderabad</span>
             </div>
           </Link>
 

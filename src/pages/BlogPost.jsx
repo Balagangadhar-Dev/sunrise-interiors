@@ -68,8 +68,10 @@ export default function BlogPost() {
 
           {/* Tags */}
           <div className="article__tags">
-            <Tag size={14} style={{ color: '#C8A96E' }} />
-            {post.tags.map(t => <span key={t} className="tag">{t}</span>)}
+            <Tag size={14} style={{ color: 'var(--primary)' }} />
+            {post.tags.map(tag => (
+              <span key={tag} className="contact-chip">{tag}</span>
+            ))}
           </div>
 
           {/* Share */}
