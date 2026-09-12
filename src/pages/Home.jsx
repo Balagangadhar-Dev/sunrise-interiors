@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Play, Star } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Play, Star } from 'lucide-react';
 import { services } from '../data/servicesData';
 import { projects } from '../data/projectsData';
 import './Home.css';
@@ -19,7 +19,19 @@ import hero8 from '../assets/hero/heroscroll8.jpg';
 import hero9 from '../assets/hero/heroscroll9.jpg';
 import hero10 from '../assets/hero/heroscroll10.jpg';
 
-const heroImages = [hero1, hero2, hero3, hero4, hero5, hero6, hero7, hero8, hero9, hero10];
+/* Each slide gets its own headline — no subtitle */
+const heroSlides = [
+  { img: hero1,  line1: 'DESIGN YOUR',      line2: 'DREAM HOME' },
+  { img: hero2,  line1: 'CRAFT YOUR',       line2: 'LIVING SPACE' },
+  { img: hero3,  line1: 'ELEVATE YOUR',     line2: 'EVERYDAY' },
+  { img: hero4,  line1: 'WHERE COMFORT',    line2: 'MEETS STYLE' },
+  { img: hero5,  line1: 'INSPIRED BY',      line2: 'YOUR VISION' },
+  { img: hero6,  line1: 'LUXURY REDEFINED', line2: 'FOR YOU' },
+  { img: hero7,  line1: 'YOUR SPACE,',      line2: 'YOUR STORY' },
+  { img: hero8,  line1: 'TIMELESS',         line2: 'ELEGANCE' },
+  { img: hero9,  line1: 'MODERN LIVING,',   line2: 'MASTERFULLY DONE' },
+  { img: hero10, line1: 'TRANSFORM YOUR',   line2: 'WORLD' },
+];
 
 /* Fade-up wrapper */
 function FadeUp({ children, delay = 0, className = '' }) {
@@ -45,77 +57,64 @@ function FadeUp({ children, delay = 0, className = '' }) {
   );
 }
 
-/* Hero Slideshow component */
+/* Hero Slideshow — auto only, no arrows, no counter */
 function HeroSlideshow() {
   const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const timerRef = useRef(null);
-  const total = heroImages.length;
+  const total = heroSlides.length;
 
   const next = useCallback(() => setCurrent(c => (c + 1) % total), [total]);
-  const prev = useCallback(() => setCurrent(c => (c - 1 + total) % total), [total]);
 
   useEffect(() => {
-    if (paused) return;
-    timerRef.current = setInterval(next, 5000);
-    return () => clearInterval(timerRef.current);
-  }, [next, paused]);
+    const timer = setInterval(next, 5500);
+    return () => clearInterval(timer);
+  }, [next]);
 
   return (
-    <div
-      className="hero__slideshow"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      {heroImages.map((img, i) => (
+    <div className="hero__slideshow">
+      {heroSlides.map((slide, i) => (
         <div
           key={i}
           className={`hero__slide ${i === current ? 'hero__slide--active' : ''}`}
           aria-hidden={i !== current}
         >
-          <img src={img} alt={`Sunrise Interiors interior ${i + 1}`} className="hero__slide-img" />
+          <img src={slide.img} alt={`Sunrise Interiors — ${slide.line1} ${slide.line2}`} className="hero__slide-img" />
         </div>
       ))}
 
       <div className="hero__overlay" />
 
+      {/* Unique headline per slide */}
       <div className="hero__title-wrap">
         <AnimatePresence mode="wait">
-          <motion.div
+          <motion.h1
             key={current}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="hero__massive-title"
+            initial={{ opacity: 0, y: 50, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -30, filter: 'blur(4px)' }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="hero__massive-title">DESIGN YOUR<br />DREAM HOME</h1>
-            <p className="hero__subtitle">Premium Interiors across Andhra Pradesh &amp; Telangana</p>
-          </motion.div>
+            {heroSlides[current].line1}<br />{heroSlides[current].line2}
+          </motion.h1>
         </AnimatePresence>
       </div>
 
+      {/* Bottom bar: CTA left, dots center, YouTube right */}
       <div className="hero__bottom-bar">
         <Link to="/projects" className="btn-outline hero__btn-glass">
           Explore Projects <ArrowRight size={14} />
         </Link>
 
-        <div className="hero__slideshow-controls">
-          <button className="hero__nav-btn" onClick={prev} aria-label="Previous image">
-            <ChevronLeft size={20} />
-          </button>
-          <div className="hero__dots">
-            {heroImages.map((_, i) => (
-              <button
-                key={i}
-                className={`hero__dot ${i === current ? 'hero__dot--active' : ''}`}
-                onClick={() => setCurrent(i)}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
-          <button className="hero__nav-btn" onClick={next} aria-label="Next image">
-            <ChevronRight size={20} />
-          </button>
+        {/* Dot indicators only */}
+        <div className="hero__dots">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              className={`hero__dot ${i === current ? 'hero__dot--active' : ''}`}
+              onClick={() => setCurrent(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
 
         <div className="hero__play-btn">
@@ -123,12 +122,6 @@ function HeroSlideshow() {
             <Play size={18} fill="currentColor" />
           </a>
         </div>
-      </div>
-
-      <div className="hero__counter">
-        <span className="hero__counter-current">{String(current + 1).padStart(2, '0')}</span>
-        <span className="hero__counter-sep">/</span>
-        <span className="hero__counter-total">{String(total).padStart(2, '0')}</span>
       </div>
     </div>
   );
@@ -145,10 +138,12 @@ export default function Home() {
   return (
     <main className="home">
 
+      {/* HERO */}
       <section className="hero" aria-label="Hero">
         <HeroSlideshow />
       </section>
 
+      {/* INTRO & STATS */}
       <section className="home-intro section" aria-label="Introduction">
         <div className="container">
           <div className="home-intro__grid">
@@ -200,6 +195,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SERVICES BENTO */}
       <section className="home-services section" aria-label="Our Services">
         <div className="container">
           <div className="home-services__header">
@@ -236,6 +232,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══════════════════════════════════════
+          PORTFOLIO GRID — Bento masonry style
+      ═══════════════════════════════════════ */}
       <section className="home-projects section" aria-label="Featured Projects">
         <div className="container">
           <FadeUp className="home-projects__header">
@@ -246,30 +245,30 @@ export default function Home() {
             </Link>
           </FadeUp>
 
-          <div className="home-projects__scroll" role="list">
-            {projects.slice(0, 4).map((proj) => (
-              <div key={proj.id} className="proj-sleek-card" role="listitem">
-                <Link to={`/projects/${proj.slug}`} className="proj-sleek-card__link">
-                  <div className="proj-sleek-card__img-wrap">
-                    <img src={proj.thumbnail} alt={proj.title} loading="lazy" />
-                    <div className="proj-sleek-card__hover-overlay">
-                      <span className="proj-sleek-card__view-label">View Project <ArrowUpRight size={14} /></span>
+          {/* Bento grid — first card tall (portrait), others square/landscape */}
+          <div className="proj-bento-grid">
+            {projects.slice(0, 4).map((proj, i) => (
+              <FadeUp key={proj.id} delay={i * 80} className={`proj-bento-card proj-bento-card--${i}`}>
+                <Link to={`/projects/${proj.slug}`} className="proj-bento-card__link">
+                  <img src={proj.thumbnail} alt={proj.title} loading={i === 0 ? 'eager' : 'lazy'} className="proj-bento-card__img" />
+                  <div className="proj-bento-card__glass">
+                    <div className="proj-bento-card__info">
+                      <span className="proj-bento-card__type">{proj.type}</span>
+                      <h3 className="proj-bento-card__title">{proj.title}</h3>
+                      <span className="proj-bento-card__loc">{proj.location}</span>
                     </div>
-                  </div>
-                  <div className="proj-sleek-card__info">
-                    <div className="proj-sleek-card__text">
-                      <h3 className="proj-sleek-card__title">{proj.title}</h3>
-                      <p className="proj-sleek-card__type">{proj.type}</p>
+                    <div className="proj-bento-card__arrow-wrap">
+                      <ArrowUpRight size={18} />
                     </div>
-                    <div className="proj-sleek-card__loc">{proj.location}</div>
                   </div>
                 </Link>
-              </div>
+              </FadeUp>
             ))}
           </div>
         </div>
       </section>
 
+      {/* TESTIMONIALS */}
       <section className="home-testimonials section" aria-label="Testimonials">
         <div className="container">
           <div className="home-testimonials__grid">
@@ -296,10 +295,10 @@ export default function Home() {
                 </div>
               </div>
               <div className="testimonial__controls">
-                <button onClick={() => setActiveTestimonial(prev => (prev === 0 ? testimonials.length - 1 : prev - 1))} aria-label="Previous">
+                <button onClick={() => setActiveTestimonial(p => (p === 0 ? testimonials.length - 1 : p - 1))} aria-label="Previous">
                   <ArrowRight size={16} style={{ transform: 'rotate(180deg)' }} />
                 </button>
-                <button onClick={() => setActiveTestimonial(prev => (prev + 1) % testimonials.length)} aria-label="Next">
+                <button onClick={() => setActiveTestimonial(p => (p + 1) % testimonials.length)} aria-label="Next">
                   <ArrowRight size={16} />
                 </button>
               </div>
