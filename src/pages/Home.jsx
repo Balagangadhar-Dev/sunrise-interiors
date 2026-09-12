@@ -1,21 +1,36 @@
 // src/pages/Home.jsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, Play, Star } from 'lucide-react';
-import { blogPosts } from '../data/blogData';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Play, Star } from 'lucide-react';
 import { services } from '../data/servicesData';
 import { projects } from '../data/projectsData';
-import heroImg from '../assets/hero-interior.jpg';
 import './Home.css';
 
-/* ── Fade-up wrapper using IntersectionObserver ── */
+/* ── Import hero slideshow images ── */
+import hero1 from '../assets/hero/heroscroll1.jpg';
+import hero2 from '../assets/hero/heroscroll2.jpg';
+import hero3 from '../assets/hero/heroscroll3.jpg';
+import hero4 from '../assets/hero/heroscroll4.jpg';
+import hero5 from '../assets/hero/heroscroll5.jpg';
+import hero6 from '../assets/hero/heroscroll6.jpg';
+import hero7 from '../assets/hero/heroscroll7.jpg';
+import hero8 from '../assets/hero/heroscroll8.jpg';
+import hero9 from '../assets/hero/heroscroll9.jpg';
+import hero10 from '../assets/hero/heroscroll10.jpg';
+
+const heroImages = [hero1, hero2, hero3, hero4, hero5, hero6, hero7, hero8, hero9, hero10];
+
+/* Fade-up wrapper */
 function FadeUp({ children, delay = 0, className = '' }) {
   const ref = useRef(null);
   const [vis, setVis] = useState(false);
   useEffect(() => {
     const el = ref.current;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } }, { threshold: 0.15 });
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
     if (el) obs.observe(el);
     return () => obs.disconnect();
   }, []);
@@ -30,8 +45,97 @@ function FadeUp({ children, delay = 0, className = '' }) {
   );
 }
 
+/* Hero Slideshow component */
+function HeroSlideshow() {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const timerRef = useRef(null);
+  const total = heroImages.length;
+
+  const next = useCallback(() => setCurrent(c => (c + 1) % total), [total]);
+  const prev = useCallback(() => setCurrent(c => (c - 1 + total) % total), [total]);
+
+  useEffect(() => {
+    if (paused) return;
+    timerRef.current = setInterval(next, 5000);
+    return () => clearInterval(timerRef.current);
+  }, [next, paused]);
+
+  return (
+    <div
+      className="hero__slideshow"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {heroImages.map((img, i) => (
+        <div
+          key={i}
+          className={`hero__slide ${i === current ? 'hero__slide--active' : ''}`}
+          aria-hidden={i !== current}
+        >
+          <img src={img} alt={`Sunrise Interiors interior ${i + 1}`} className="hero__slide-img" />
+        </div>
+      ))}
+
+      <div className="hero__overlay" />
+
+      <div className="hero__title-wrap">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <h1 className="hero__massive-title">DESIGN YOUR<br />DREAM HOME</h1>
+            <p className="hero__subtitle">Premium Interiors across Andhra Pradesh &amp; Telangana</p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="hero__bottom-bar">
+        <Link to="/projects" className="btn-outline hero__btn-glass">
+          Explore Projects <ArrowRight size={14} />
+        </Link>
+
+        <div className="hero__slideshow-controls">
+          <button className="hero__nav-btn" onClick={prev} aria-label="Previous image">
+            <ChevronLeft size={20} />
+          </button>
+          <div className="hero__dots">
+            {heroImages.map((_, i) => (
+              <button
+                key={i}
+                className={`hero__dot ${i === current ? 'hero__dot--active' : ''}`}
+                onClick={() => setCurrent(i)}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+          <button className="hero__nav-btn" onClick={next} aria-label="Next image">
+            <ChevronRight size={20} />
+          </button>
+        </div>
+
+        <div className="hero__play-btn">
+          <a href="https://www.youtube.com/@sunriseinteriors/videos" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
+            <Play size={18} fill="currentColor" />
+          </a>
+        </div>
+      </div>
+
+      <div className="hero__counter">
+        <span className="hero__counter-current">{String(current + 1).padStart(2, '0')}</span>
+        <span className="hero__counter-sep">/</span>
+        <span className="hero__counter-total">{String(total).padStart(2, '0')}</span>
+      </div>
+    </div>
+  );
+}
+
 const testimonials = [
-  { name: 'Rajesh Kumar', location: 'Ongole', rating: 5, text: 'Incredible architects. The whole process, a star who designs—our dream space became a reality!', avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d' },
+  { name: 'Rajesh Kumar', location: 'Ongole', rating: 5, text: 'Incredible architects. The whole process, a star who designs — our dream space became a reality!', avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d' },
   { name: 'Priya Venkat', location: 'Markapur', rating: 5, text: 'The visualizations were so realistic, and the material recommendations were spot on for our warm, humid climate.', avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d' },
 ];
 
@@ -41,50 +145,10 @@ export default function Home() {
   return (
     <main className="home">
 
-      {/* ═══════════════════════════════════════
-          HERO
-      ═══════════════════════════════════════ */}
       <section className="hero" aria-label="Hero">
-        <div className="hero__image-wrap">
-          <img
-            src={heroImg}
-            alt="Modern Interior Design"
-            className="hero__image"
-            loading="eager"
-            fetchpriority="high"
-          />
-          <div className="hero__overlay" />
-          <motion.div
-            className="hero__title-wrap"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h1 className="hero__massive-title">
-              DESIGN YOUR<br/>DREAM HOME
-            </h1>
-          </motion.div>
-          <motion.div 
-            className="hero__bottom-bar"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            <Link to="/projects" className="btn-outline hero__btn-glass">
-              Explore Projects <ArrowRight size={14} />
-            </Link>
-            <div className="hero__play-btn">
-              <a href="https://www.youtube.com/@sunriseinteriors/videos" target="_blank" rel="noopener noreferrer">
-                <Play size={18} fill="currentColor" />
-              </a>
-            </div>
-          </motion.div>
-        </div>
+        <HeroSlideshow />
       </section>
 
-      {/* ═══════════════════════════════════════
-          INTRO & STATS (BENTO)
-      ═══════════════════════════════════════ */}
       <section className="home-intro section" aria-label="Introduction">
         <div className="container">
           <div className="home-intro__grid">
@@ -136,9 +200,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════
-          SERVICES (BENTO BOX)
-      ═══════════════════════════════════════ */}
       <section className="home-services section" aria-label="Our Services">
         <div className="container">
           <div className="home-services__header">
@@ -166,7 +227,7 @@ export default function Home() {
                 </div>
                 {i === 1 && (
                   <div className="bento-svc-card__img-wrap">
-                     <img src={svc.image} alt={svc.name} className="bento-svc-card__img" />
+                    <img src={svc.image} alt={svc.name} className="bento-svc-card__img" />
                   </div>
                 )}
               </FadeUp>
@@ -175,51 +236,46 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════
-          PROJECTS SHOWCASE
-      ═══════════════════════════════════════ */}
       <section className="home-projects section" aria-label="Featured Projects">
         <div className="container">
           <FadeUp className="home-projects__header">
             <span className="section-label">Our Portfolio</span>
             <h2 className="section-title">Elevating Everyday<br />Living Through Design</h2>
             <Link to="/projects" className="btn-outline">
-              View Projects <ArrowRight size={14} />
+              View All Projects <ArrowRight size={14} />
             </Link>
           </FadeUp>
 
-          <div className="home-projects__scroll">
-            {projects.slice(0, 4).map((proj, i) => (
-              <FadeUp key={proj.id} delay={i * 100} className="proj-sleek-card">
-                <Link to={`/projects/${proj.slug}`}>
+          <div className="home-projects__scroll" role="list">
+            {projects.slice(0, 4).map((proj) => (
+              <div key={proj.id} className="proj-sleek-card" role="listitem">
+                <Link to={`/projects/${proj.slug}`} className="proj-sleek-card__link">
                   <div className="proj-sleek-card__img-wrap">
                     <img src={proj.thumbnail} alt={proj.title} loading="lazy" />
+                    <div className="proj-sleek-card__hover-overlay">
+                      <span className="proj-sleek-card__view-label">View Project <ArrowUpRight size={14} /></span>
+                    </div>
                   </div>
                   <div className="proj-sleek-card__info">
-                    <div>
+                    <div className="proj-sleek-card__text">
                       <h3 className="proj-sleek-card__title">{proj.title}</h3>
                       <p className="proj-sleek-card__type">{proj.type}</p>
                     </div>
                     <div className="proj-sleek-card__loc">{proj.location}</div>
                   </div>
                 </Link>
-              </FadeUp>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════
-          TESTIMONIALS
-      ═══════════════════════════════════════ */}
       <section className="home-testimonials section" aria-label="Testimonials">
         <div className="container">
           <div className="home-testimonials__grid">
             <FadeUp className="home-testimonials__left">
               <span className="section-label">Voices</span>
-              <h2 className="home-testimonials__title">
-                Truly Loved by<br />Homeowners.
-              </h2>
+              <h2 className="home-testimonials__title">Truly Loved by<br />Homeowners.</h2>
               <p className="body-text">
                 Our designs aren't just aesthetic; they're deeply functional and tailored to the unique lifestyle of every family we work with.
               </p>
@@ -233,15 +289,17 @@ export default function Home() {
                 <div>
                   <div className="testimonial__name">{testimonials[activeTestimonial].name}</div>
                   <div className="testimonial__stars">
-                    {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => <Star key={i} size={12} fill="var(--primary)" color="var(--primary)" />)}
+                    {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
+                      <Star key={i} size={12} fill="var(--primary)" color="var(--primary)" />
+                    ))}
                   </div>
                 </div>
               </div>
               <div className="testimonial__controls">
-                <button onClick={() => setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}>
-                  <ArrowRight size={16} style={{transform: 'rotate(180deg)'}} />
+                <button onClick={() => setActiveTestimonial(prev => (prev === 0 ? testimonials.length - 1 : prev - 1))} aria-label="Previous">
+                  <ArrowRight size={16} style={{ transform: 'rotate(180deg)' }} />
                 </button>
-                <button onClick={() => setActiveTestimonial((prev) => (prev + 1) % testimonials.length)}>
+                <button onClick={() => setActiveTestimonial(prev => (prev + 1) % testimonials.length)} aria-label="Next">
                   <ArrowRight size={16} />
                 </button>
               </div>
